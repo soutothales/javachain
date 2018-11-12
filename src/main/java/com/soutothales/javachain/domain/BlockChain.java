@@ -24,14 +24,11 @@ public class BlockChain {
         Instant timestamp = Instant.now();
 
         block.put("index", chain.size() + 1);
-        block.put("timestamp", timestamp); // This can be changed to a ZonedDateTime
+        block.put("timestamp", timestamp);
         block.put("transactions", this.current_transactions);
         block.put("proof", proof);
-        try {
-            block.put("previous_hash", this.hash256(this.chain.get(chain.size()-1)));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        block.put("previous_hash", previous_hash);  // this.hash256(this.chain.get(chain.size()-1))
+                                                    // this line above hashes a block on the chain
 
         this.current_transactions = new ArrayList<>();
         this.chain.add(block);
