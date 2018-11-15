@@ -10,27 +10,69 @@ import java.util.Map;
 
 public class BlockChain {
 
-    private List<Object> current_transactions;
-    private List<Map<String, Object>> chain;
+    private List<Transaction> current_transactions = new ArrayList<>();
 
-    public BlockChain(List<Object> current_transactions, List<Map<String, Object>> chain) {
-        this.current_transactions = current_transactions;
-        this.chain = chain;
+    public List<Transaction> getCurrent_transactions() {
+        return current_transactions;
     }
 
-    public Map newBlock(Integer proof, String previous_hash) {
+    private List<Map<String, Object>> chain = new ArrayList<>();
+
+    public BlockChain() {
+        //this.newBlock(100, 1);
+    }
+
+    public List<Map<String, Object>> getChain() {
+        return chain;
+    }
+
+    public Map newBlock(Integer proof, Integer previous_hash) {
+
         Map<String, Object> block = new HashMap<>();
 
         Instant timestamp = Instant.now();
+
+        //System.out.println(getChain());
 
         block.put("index", chain.size() + 1);
         block.put("timestamp", timestamp);
         block.put("transactions", this.current_transactions);
         block.put("proof", proof);
-        block.put("previous_hash", previous_hash);  // this.hash256(this.chain.get(chain.size()-1))
-                                                    // this line above hashes a block on the chain
+        block.put("previous_hash", previous_hash);
+
+
         this.current_transactions = new ArrayList<>();
         this.chain.add(block);
+
+        //System.out.println(block);
+
+        return block;
+    }
+
+    public Map newBlock(Integer proof) {
+
+        Map<String, Object> block = new HashMap<>();
+
+        Instant timestamp = Instant.now();
+
+        //System.out.println(getChain());
+
+        block.put("index", chain.size() + 1);
+        block.put("timestamp", timestamp);
+        block.put("transactions", this.current_transactions);
+        block.put("proof", proof);
+        try {
+                block.put("previous_hash", this.hash256(this.chain.get(chain.size()-1).toString()));
+                // this.hash256(this.chain.get(chain.size()-1))
+                // this line above hashes a block on the chain
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+
+        this.current_transactions = new ArrayList<>();
+        this.chain.add(block);
+
+        //System.out.println(block);
 
         return block;
     }

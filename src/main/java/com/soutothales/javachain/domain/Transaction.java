@@ -3,6 +3,7 @@ package com.soutothales.javachain.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+//@Entity
 public class Transaction implements Serializable {
 
     private String sender;
@@ -10,9 +11,11 @@ public class Transaction implements Serializable {
     private Integer amount;
 
     public Transaction(String sender, String recipient, Integer amount) {
+        //BlockChain bc = new BlockChain();
         this.sender = sender;
         this.recipient = recipient;
         this.amount = amount;
+        //bc.newTransaction(sender, recipient, amount);
     }
 
     public String getSender() {
